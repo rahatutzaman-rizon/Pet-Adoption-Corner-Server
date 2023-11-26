@@ -39,27 +39,28 @@ async function run() {
     ///create a collection of documents
     const petCollection = client.db('petcollection').collection('adopted');
     const donateCollection = client.db('donatecollection').collection('donate');
+    const adoptCollection=client.db('adoptcollection').collection('adopt');
 ////insert a book post 
- app.post('/upload-book',async(req,res)=>{
+//  app.post('/upload-book',async(req,res)=>{
 
-  const data=req.body;
+//   const data=req.body;
 
-  //
-  const result=await booksCollection.insertOne(data);
-  console.log(result)
-  res.send(result);
- })
+//   //
+//   const result=await booksCollection.insertOne(data);
+//   console.log(result)
+//   res.send(result);
+//  })
 
  ////insert a book post 
- app.post('/borrow', async(req,res)=>{
+ app.post('/adopt', async(req,res)=>{
   const newcart = req.body;
  
- const result = await borrowCollection.insertOne(newcart);
+ const result = await adoptCollection.insertOne(newcart);
  res.send(result);
 })
 
-app.get("/borrow", async (req, res) => {
-const cursor = borrowCollection.find();
+app.get("/adopt", async (req, res) => {
+const cursor = adoptCollection.find();
 const result = await cursor.toArray();
 res.send(result);
 });
@@ -71,7 +72,7 @@ res.send(result);
  const query={
   _id : new ObjectId(id)
  }
-  const result = await booksCollection.findOne(query) ;
+  const result = await petCollection.findOne(query) ;
   res.send(result);
 });
 
