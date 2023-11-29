@@ -34,7 +34,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-     await client.connect();
+     //await client.connect();
 
     ///create a collection of documents
     const petCollection = client.db('petcollection').collection('adopted');
@@ -42,6 +42,8 @@ async function run() {
     const adoptCollection=client.db('petcollection').collection('adopt');
     const addCollection=client.db('petcollection').collection("add-pet");
     const stipeCollection=client.db('petcollection').collection("stipe");
+    const usersCollection=client.db("petcollection").collection("users");
+
 ////insert a book post 
 //  app.post('/upload-book',async(req,res)=>{
 
@@ -52,6 +54,27 @@ async function run() {
 //   console.log(result)
 //   res.send(result);
 //  })
+
+
+//signup role of users
+app.post('/users', async(req,res)=>{
+  const users= req.body;
+  console.log(users)
+
+ const result = await usersCollection.insertOne(users);
+
+ res.send(result);
+})
+
+
+app.get('/users',async(req,res)=>{
+
+  const result=await usersCollection.find().toArray();
+  res.send(result);
+})
+
+
+
 
 //insert donation campign field 
 app.post('/donation-campaign', async(req,res)=>{
@@ -195,6 +218,36 @@ const result=await addCollection.updateOne(filter,updateDoc,options);
 
   res.send(result)
  })
+
+
+ ///refund a donation
+
+ app.delete("/donation-detail/:id", async(req,res)=>{
+
+  const id=req.params.id;
+
+const filter ={ _id :new ObjectId(id)};
+const result= await stipeCollection.deleteOne(filter)
+res.send(result);
+
+
+})
+
+
+///adope /remove request
+
+
+app.delete("/adoption/:id", async(req,res)=>{
+
+  const id=req.params.id;
+
+const filter ={ _id :new ObjectId(id)};
+const result= await petCollection.deleteOne(filter)
+res.send(result);
+
+
+})
+    
     
 
 
