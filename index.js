@@ -233,6 +233,44 @@ res.send(result);
 
 })
 
+//pet delete
+app.delete("/pet-listing/:id", async(req,res)=>{
+
+  const id=req.params.id;
+
+const filter ={ _id :new ObjectId(id)};
+const result= await petCollection.deleteOne(filter)
+res.send(result);
+
+
+})
+
+///adopt remove
+
+app.delete("/pet-listing/:id", async(req,res)=>{
+
+  const id=req.params.id;
+
+const filter ={ _id :new ObjectId(id)};
+const result= await petCollection.deleteOne(filter)
+res.send(result);
+
+
+})
+
+
+//delete adopted pet
+app.delete("/add-pet/:id", async(req,res)=>{
+
+  const id=req.params.id;
+
+const filter ={ _id :new ObjectId(id)};
+const result= await addCollection.deleteOne(filter)
+res.send(result);
+
+
+})
+
 
 ///adope /remove request
 
@@ -252,31 +290,15 @@ res.send(result);
 
 
 
- ///update a books
- app.patch("/book/:id", async(req,res)=>{
 
-  const id=req.params.id;
-const updateBooksData=req.body;
-const filter ={ _id :new ObjectId(id)};
+//delete a users
 
-
-const updateDoc = {
-  $set: updateBooksData // No need to spread the 'updateBooksData' since it's already an object
-};
-const options = { upsert: true };
-
-const result=await booksCollection.updateOne(filter,updateDoc,options);
-
-  res.send(result)
- })
-    
-//delete a book
-app.delete("/book/:id", async(req,res)=>{
+app.delete("/users/:id", async(req,res)=>{
 
   const id=req.params.id;
 
 const filter ={ _id :new ObjectId(id)};
-const result= await booksCollection.deleteOne(filter)
+const result= await usersCollection.deleteOne(filter)
 res.send(result);
 
 
@@ -284,7 +306,7 @@ res.send(result);
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    //console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
