@@ -43,6 +43,8 @@ async function run() {
     const addCollection=client.db('petcollection').collection("add-pet");
     const stipeCollection=client.db('petcollection').collection("stipe");
     const usersCollection=client.db("petcollection").collection("users");
+    const shop=client.db("petcollection").collection("food");
+    const orderCollection=client.db("petcollection").collection("order");
 
 ////insert a book post 
 //  app.post('/upload-book',async(req,res)=>{
@@ -119,6 +121,38 @@ app.post('/add-pet',async(req,res)=>{
     
     res.send(result);
 })
+
+
+///shop
+
+app.get("/shop", async (req, res) => {
+  const cursor = shop.find();
+  const result = await cursor.toArray();
+  res.send(result);
+  }); 
+
+
+  //order post 
+  app.post('/order',async(req,res)=>{
+
+    const data=req.body;
+  
+    //
+    const result=await orderCollection.insertOne(data);
+    
+    res.send(result);
+})
+
+app.get("/order", async (req, res) => {
+  const cursor = orderCollection.find();
+  const result = await cursor.toArray();
+  res.send(result);
+  }); 
+
+
+
+
+
 
 app.get("/add-pet", async (req, res) => {
   const cursor = addCollection.find();
@@ -305,7 +339,7 @@ res.send(result);
 })
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    //sawait client.db("admin").command({ ping: 1 });
     //console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
