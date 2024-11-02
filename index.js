@@ -5,6 +5,8 @@ const app = express();
 
 
 
+
+
 //mongodb
  const { MongoClient, ServerApiVersion,ObjectId } = require('mongodb');
  require('dotenv').config()
@@ -12,8 +14,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-
 
 
 
@@ -45,17 +45,50 @@ async function run() {
     const usersCollection=client.db("petcollection").collection("users");
     const shop=client.db("petcollection").collection("food");
     const orderCollection=client.db("petcollection").collection("order");
+    const donation =client.db("petcollection").collection("donation");
+    
 
-////insert a book post 
-//  app.post('/upload-book',async(req,res)=>{
+// Get all campaigns
+  // Get all campaigns
+  app.get('/donation-campaign', async (req, res) => {
+    try {
+      const campaigns = await donation.find({}).toArray();
+      res.json({ campaigns });
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to fetch campaigns' });
+    }
+  });
 
-//   const data=req.body;
+  // Donate to a campaign
+  app.post('/campaigns/donate/:id', async (req, res) => {
+    const { id } = req.params;
+    const { amount } = req.body;
 
-//   //
-//   const result=await booksCollection.insertOne(data);
-//   console.log(result)
-//   res.send(result);
-//  })
+    try {
+      // Find the campaign by ID
+      const campaign = await donation.findOne({ id });
+      if (!campaign) return res.status(404).json({ error: 'Campaign not found' });
+
+      // Update raised amount and donors count
+      const updatedCampaign = await donation.updateOne(
+        { id },
+        {
+          $inc: { raised: amount, donors: 1 },
+        }
+      );
+
+      if (updatedCampaign.matchedCount === 0) {
+        return res.status(404).json({ error: 'Campaign not found' });
+      }
+
+      res.json({ message: 'Donation successful', updatedCampaign });
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to process donation' });
+    }
+  });
+
+
+
 
 
 //signup role of users
