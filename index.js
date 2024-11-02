@@ -48,7 +48,7 @@ async function run() {
 
 // Get all campaigns
   // Get all campaigns
-  app.get('/donation-campaign', async (req, res) => {
+  app.get('/donation', async (req, res) => {
     try {
       const campaigns = await donation.find({}).toArray();
       res.json({ campaigns });
@@ -58,7 +58,7 @@ async function run() {
   });
 
   // Donate to a campaign
-  app.post('/campaigns/donate/:id', async (req, res) => {
+  app.post('/donation/:id', async (req, res) => {
     const { id } = req.params;
     const { amount } = req.body;
 
