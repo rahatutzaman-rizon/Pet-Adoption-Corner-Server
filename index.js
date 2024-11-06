@@ -60,6 +60,46 @@ app.get('/donation', async (req, res) => {
   }
 });
 
+// Create a new campaign
+app.post('/donation', async (req, res) => {
+  try {
+    const campaign = req.body;
+    const result = await donationCollection.insertOne(campaign);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to create campaign' });
+  }
+});
+
+// Update a campaign by ID
+app.put('/donation/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedCampaign = req.body;
+    const result = await donation.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updatedCampaign }
+    );
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update campaign' });
+  }
+});
+
+// Delete a campaign by ID
+app.delete('/donation/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await donation.deleteOne({ _id: new ObjectId(id) });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete campaign' });
+  }
+});
+
+
+
+
 // Get single campaign by ID
 app.get("/donation/:id", async (req, res) => {
   try {
