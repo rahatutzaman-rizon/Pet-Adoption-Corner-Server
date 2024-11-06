@@ -64,7 +64,7 @@ app.get('/donation', async (req, res) => {
 app.post('/donation', async (req, res) => {
   try {
     const campaign = req.body;
-    const result = await donationCollection.insertOne(campaign);
+    const result = await donation.insertOne(campaign);
     res.json(result);
   } catch (err) {
     res.status(500).json({ error: 'Failed to create campaign' });
