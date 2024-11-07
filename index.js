@@ -33,7 +33,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-     //await client.connect();
+    //  await client.connect();
 
     ///create a collection of documents
     const petCollection = client.db('petcollection').collection('adopted');
@@ -247,6 +247,16 @@ app.post('/update-donation', async (req, res) => {
 
 
 
+//get payment
+
+app.get('/paymentList',async(req,res)=>{
+
+  const result=await stripeCollection.find().toArray();
+  res.send(result);
+})
+
+
+
 
 
 //signup role of users
@@ -315,12 +325,70 @@ app.post('/add-pet',async(req,res)=>{
 
 
 ///shop
+// GET all products
+app.get('/shop', async (req, res) => {
+  try {
+    const products = await shop.find().toArray();
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
-app.get("/shop", async (req, res) => {
-  const cursor = shop.find();
-  const result = await cursor.toArray();
-  res.send(result);
-  }); 
+// POST a new product
+app.post('/shop', async (req, res) => {
+  try {
+    const { name, forAnimal, image, quantity, description } = req.body;
+    const result = await shop.insertOne({ name, forAnimal, image, quantity, description });
+
+    if (result.insertedId) {
+      res.status(201).json({ _id: result.insertedId, name, forAnimal, image, quantity, description });
+    } else {
+      res.status(400).json({ message: 'Failed to create product' });
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+// PUT update a product
+app.put('/shop/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, forAnimal, image, quantity, description } = req.body;
+
+  try {
+    const updatedProduct = await shop.findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: { name, forAnimal, image, quantity, description } },
+      { returnOriginal: false }
+    );
+
+    if (!updatedProduct.value) return res.status(404).json({ message: 'Product not found' });
+    res.json(updatedProduct.value);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// DELETE a product
+app.delete('/shop/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await shop.deleteOne({ _id: new ObjectId(id) });
+    if (result.deletedCount === 0) return res.status(404).json({ message: 'Product not found' });
+    res.json({ message: 'Product deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+
+
+
+
+
 
   app.post('/order', async(req, res) => {
     try {
