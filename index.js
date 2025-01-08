@@ -1,11 +1,8 @@
-require('dotenv').config();
-
-
 const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')('sk_test_51Klod6Hm471kJsphHC9404YI2Hc35Lm1glEThlrgK2dlNyEfCxt0njVK9bhskSvJmGo8DLyVoTNBYjqWyeSTy0iu00BKTjH4nG')
 
 
 
@@ -21,7 +18,8 @@ app.use(express.json());
 
 
 
-const uri = process.env.MONGO_URI;
+//
+const uri ="mongodb://redwantamim525:O1kuwCQ24KxdUUiT@ac-cpspwpq-shard-00-00.ldanhxi.mongodb.net:27017,ac-cpspwpq-shard-00-01.ldanhxi.mongodb.net:27017,ac-cpspwpq-shard-00-02.ldanhxi.mongodb.net:27017/?ssl=true&replicaSet=atlas-ndw10b-shard-0&authSource=admin&retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
