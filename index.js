@@ -148,8 +148,8 @@ app.post('/create-payment-session', async (req, res) => {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}&campaign_id=${campaignId}&amount=${numericAmount}`,
-      cancel_url: `${process.env.CLIENT_URL}/cancel`,
+      success_url: `https://pet-adoption-corner-lq7c.vercel.app/success?session_id={CHECKOUT_SESSION_ID}&campaign_id=${campaignId}&amount=${numericAmount}`,
+      cancel_url: `https://pet-adoption-corner-lq7c.vercel.app/cancel`,
     });
 
     // Save session details to stripeCollection for tracking
