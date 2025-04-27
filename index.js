@@ -32,9 +32,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    //  await client.connect();
-
+ 
     ///create a collection of documents
     const petCollection = client.db('petcollection').collection('adopted');
     const donateCollection = client.db('petcollection').collection('campaign');
@@ -48,9 +46,6 @@ async function run() {
     const stripeCollection =client.db("petcollection").collection("stripe");
 
 
- 
-
-// Get all campaigns
 app.get('/donation', async (req, res) => {
   try {
     const campaigns = await donation.find({}).toArray();
