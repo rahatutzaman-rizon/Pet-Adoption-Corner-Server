@@ -147,7 +147,7 @@ app.post('/create-payment-session', async (req, res) => {
       cancel_url: `https://pet-adoption-corner-lq7c.vercel.app/cancel`,
     });
 
-    // Save session details to stripeCollection for tracking
+   
     await stripeCollection.insertOne({
       sessionId: session.id,
       campaignId: campaignId,
@@ -319,7 +319,7 @@ app.post('/add-pet',async(req,res)=>{
 })
 
 
-///shop
+
 // GET all products
 app.get('/shop', async (req, res) => {
   try {
